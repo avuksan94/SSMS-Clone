@@ -1,0 +1,31 @@
+﻿using SqlViewer.Dal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SqlViewer.Models
+{
+    internal class DatabaseRoutine
+    {
+        private readonly Lazy<IEnumerable<Parameter>> parameters;
+
+        public DatabaseRoutine()
+        {
+            parameters = new Lazy<IEnumerable<Parameter>>(() => RepositoryFactory.GetRepository().GetParameters(this));
+        }
+
+        public IList<Parameter> Parameters
+        {
+            get => new List<Parameter>(parameters.Value);
+        }
+
+        public string? Name { get; set; }
+        public string? Definition { get; set; }
+        public Database? Database { get; set; }
+        public RoutineType Type { get; set; }
+
+        public override string ToString() => Name!;
+    }
+}
